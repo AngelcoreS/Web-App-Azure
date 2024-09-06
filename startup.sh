@@ -1,5 +1,5 @@
 #!/bin/bash
 # Copy custom Nginx config to /etc/nginx
-cp /home/site/wwwroot/custom-nginx.conf /etc/nginx/nginx.conf
+cp /home/default /etc/nginx/sites-available/default
 # Restart Nginx service
 service nginx restart
