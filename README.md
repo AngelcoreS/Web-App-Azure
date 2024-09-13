@@ -6,19 +6,71 @@ I also installed Git to clone my repository, and set up the NGINX configuration 
 
 This tutorial combines both the technical setup and problem-solving skills that helped me overcome various challenges, ensuring a smooth deployment process from code to live website.
 
-<h2>Load and Analyze Apache Logs</h2>
+<h2>Create App Services</h2>
 
-Next, Apache web server logs representing “regular” activity for VSI were uploaded and analyzed:
-
-- Select the “Add Data” option within Splunk. Select the “Upload” option. Select the apache_logs.txt.
-
-- After successful upload, “Start Searching” was selected and the time range set to “All Time.”
+1. Log in to Azure Portal
+Visit the Azure Portal and log in using your Azure account credentials.
+2. Navigate to App Services
+In the Azure Portal, use the search bar at the top and type "App Services."
+Click on App Services from the search results.
+3. Create New App Service
+On the App Services page, click the + Create button (or + Add if applicable).
+This will open the "Create Web App" wizard.
+![create](img/10AppServices.png)
+5. Configure Basic Settings
+Subscription: Choose your Azure subscription.
+Resource Group: Either select an existing resource group or create a new one.
+Name: Enter a unique name for your app service (this will be part of your app's URL, e.g., myapp.azurewebsites.net).
+Publish: Choose either Code (for typical web apps) or Docker (if you're using Docker containers).
+Runtime stack: Select the programming language and version you want to use (e.g., .NET, Node.js, PHP, Python, Java). In this case I will use PHP 8.2, when you deploy a PHP application to Azure App Service with PHP 8.x or later, it's likely being served by NGINX by default
+Region: Select the geographic region where you want your app to be hosted.
+6. Select Basic Pricing Tier (B1)
+Plan: Under the App Service Plan section, either select an existing plan or create a new one.
+Pricing Tier: Click on Change Size and choose the Basic B1 pricing tier, To bind a custom domain to an Azure App Service, you’ll need at least the Basic B1 pricing tier.
+Click Apply to confirm your selection.
+![pricing](img/11AppServices.png)
+7. Configure Deployment Settings (Optional)
+If you want, you can configure continuous deployment using GitHub, Bitbucket, Azure Repos, etc. Otherwise, you can skip this step for manual deployment.
+8. Review and Create
+Review all your settings and make sure everything is configured correctly.
+Click the Create button at the bottom of the page.
+9. Deployment Process
+Azure will now deploy the App Service, which can take a couple of minutes. You can monitor the progress in the Notifications area at the top of the portal.
+</br>
+<h2>Bind a Custom Domain</h2>
 
 </br>
+Prepare Your Domain:
 
-<b><h3>------------------Reports------------------</h3></b>
+Ensure that you have access to a domain name (through providers like GoDaddy, Namecheap, etc.).
+You’ll need to manage the DNS settings of your domain to point to your Azure App Service.
+Add Custom Domain in Azure:
+![add](img/13AppServices.png)
+Once your App Service is on the Basic B1 plan or higher, in the App Service's settings, scroll down to the Settings section and click Custom domains.
+Click Add custom domain at the top.
+Verify Domain Ownership:
 
+Enter your domain: 
+
+Enter the custom domain you want to bind (e.g., mydomain.com).
 </br>
+![manage](img/14Domain.png)
+</br>
+Verify ownership: Azure will ask you to verify ownership of the domain. You can verify in one of two ways:
+CNAME Record: Set a CNAME record in your domain's DNS settings to point to the default Azure App Service URL (your-app-name.azurewebsites.net).
+TXT Record: Add a TXT record in your DNS settings to prove ownership.
+</br></br>
+![add](img/15Domain.png)
+</br>
+![validate](img/16Domain.png)
+</br>
+Once you've added the required DNS records, click Verify in Azure to confirm ownership.
+
+Configure A or CNAME Record:
+
+After verifying ownership, configure either an A Record or a CNAME Record in your domain's DNS settings to bind the domain to your App Service:
+CNAME: If using a subdomain (e.g., www.mydomain.com), set the CNAME record to point to your App Service’s default URL (your-app-name.azurewebsites.net).
+A Record: If using the root domain (e.g., mydomain.com), set an A record pointing to your App Service’s IP address, which can be found in the Custom domains settings.
 
 - HTTP Methods Report:
 
@@ -30,24 +82,5 @@ This will provide insight into the type of HTTP activity being requested against
 
 ![Method](Pictures/apache/1Method_Apache.png)
 
-- Top 10 Referring Domains Report:
-
-Create a report showing the top 10 domains that refer to VSI’s website.
-
-This will assist VSI with identifying suspicious referrers.
-
-`source="apache_logs.txt" | top limit=10 referer_domain`
-
-![Referer](Pictures/apache/2Referer_domain_apache.png)
-
-- HTTP Response Codes Report:
-
-Creat a report showing the count of each HTTP response code.
-
-This will provide insight into any suspicious levels of HTTP responses.
-
-![Status](Pictures/apache/3Status_code_apache.png)
-
-</br>
 
 <b><h3>------------------Alerts------------------</h3></b>
