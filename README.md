@@ -24,19 +24,22 @@ Name: Enter a unique name for your app service (this will be part of your app's 
 Publish: Choose either Code (for typical web apps) or Docker (if you're using Docker containers).
 Runtime stack: Select the programming language and version you want to use (e.g., .NET, Node.js, PHP, Python, Java). In this case I will use PHP 8.2, when you deploy a PHP application to Azure App Service with PHP 8.x or later, it's likely being served by NGINX by default
 Region: Select the geographic region where you want your app to be hosted.
-6. Select Basic Pricing Tier (B1)
+![pricing](img/11AppServices.png)
+7. Select Basic Pricing Tier (B1)
 Plan: Under the App Service Plan section, either select an existing plan or create a new one.
 Pricing Tier: Click on Change Size and choose the Basic B1 pricing tier, To bind a custom domain to an Azure App Service, you’ll need at least the Basic B1 pricing tier.
 Click Apply to confirm your selection.
-![pricing](img/11AppServices.png)
-7. Configure Deployment Settings (Optional)
-If you want, you can configure continuous deployment using GitHub, Bitbucket, Azure Repos, etc. Otherwise, you can skip this step for manual deployment.
-8. Review and Create
+![create](img/12AppServices.png)
+8. Configure Deployment Settings (Optional)
+If you want, you can configure continuous deployment using GitHub, Bitbucket, Azure Repos, etc. Otherwise, you can skip this step for manual deployment which is what we are going to do in this guide.
+9. Review and Create
 Review all your settings and make sure everything is configured correctly.
 Click the Create button at the bottom of the page.
-9. Deployment Process
+
+10. Deployment Process
 Azure will now deploy the App Service, which can take a couple of minutes. You can monitor the progress in the Notifications area at the top of the portal.
 </br>
+
 <h2>Bind a Custom Domain</h2>
 
 </br>
@@ -56,21 +59,41 @@ Enter the custom domain you want to bind (e.g., mydomain.com).
 </br>
 ![manage](img/14Domain.png)
 </br>
-Verify ownership: Azure will ask you to verify ownership of the domain. You can verify in one of two ways:
+Verify ownership: Azure will ask you to verify ownership of the domain. You can verify in two ways:
+</br>
 CNAME Record: Set a CNAME record in your domain's DNS settings to point to the default Azure App Service URL (your-app-name.azurewebsites.net).
+</br>
+<b>Azure recommends using CNAME records to map a custom domain (like www.maindomain.com) to an Azure Web App URL (yourapp.azurewebsites.net)</b>
+</br>
+TXT Record: Add a TXT record in your DNS settings to prove ownership.
+</br>
+Or/and
+</br>
+A Record: If using the root domain (e.g., mydomain.com), set an A record pointing to your App Service’s IP address, which can be found in the Custom domains settings.
+</br>
 TXT Record: Add a TXT record in your DNS settings to prove ownership.
 </br></br>
 ![add](img/15Domain.png)
 </br>
 ![validate](img/16Domain.png)
+![validate](img/16Domain2.png)
+
 </br>
+
 Once you've added the required DNS records, click Verify in Azure to confirm ownership.
 
-Configure A or CNAME Record:
+Configure A and/or CNAME Record:
 
 After verifying ownership, configure either an A Record or a CNAME Record in your domain's DNS settings to bind the domain to your App Service:
 CNAME: If using a subdomain (e.g., www.mydomain.com), set the CNAME record to point to your App Service’s default URL (your-app-name.azurewebsites.net).
 A Record: If using the root domain (e.g., mydomain.com), set an A record pointing to your App Service’s IP address, which can be found in the Custom domains settings.
+
+In seconds azure will bind the certificate and allow https  
+![rready](img/16Web.png)
+
+<h2>SSH Manual Deployment</h2>
+
+
 
 - HTTP Methods Report:
 
