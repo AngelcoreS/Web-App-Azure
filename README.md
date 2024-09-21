@@ -89,21 +89,75 @@ CNAME: If using a subdomain (e.g., www.mydomain.com), set the CNAME record to po
 A Record: If using the root domain (e.g., mydomain.com), set an A record pointing to your App Service’s IP address, which can be found in the Custom domains settings.
 
 In seconds azure will bind the certificate and allow https  
+
 ![rready](img/16Web.png)
 
 <h2>SSH Manual Deployment</h2>
 
+1. In the Development Tools section, click on SSH. Open the SSH terminal by clicking on Go to SSH.
+ 
+![ssh](img/18SSH.png)
 
+2. Access the App Service's File System via SSH:
 
-- HTTP Methods Report:
+Once connected via SSH in the Azure portal, you’ll be inside the Azure App Service container.
 
-Create a report showing a table of the different HTTP methods (GET, POST, HEAD, etc.).
+![container](img/19Server.png)
 
-This will provide insight into the type of HTTP activity being requested against their web server.
+<b>Note: Any data outside `/home' is not persisted</b>, this mean any data stored outside /home: Temporary and non-persistent; it is lost on app restarts, scaling, or redeployments.
+Navigate to the Web Content Directory:
 
-`source="apache_logs.txt" | top method`
+For App Services, the default content is typically located in the <b>/home/site/wwwroot directory:</b>
 
-![Method](Pictures/apache/1Method_Apache.png)
+`cd /home/site/wwwroot`
+
+Edit the hostingstart.html File:
+You should see a file named hostingstart.html in this directory (it is the default web page for newly created App Services).
+
+`nano hostingstart.html`
+
+Modify the file to display "Hello, World!". Replace the content inside the body tag with the following:
+
+![hello](img/20hostingstart.png)
+
+Save the File:
+
+After editing the file, press CTRL + X to exit nano, then press Y to confirm changes, and hit Enter to save the file.
+Step 4: Verify the Changes
+Visit Your Web App:
+Open a browser and navigate to your App Service URL:
+
+You should now see the modified hostingstart.html file displaying "Hello World!".
+
+![display](img/21start.png)
+
+<h2>Deploy Web Blog Sample From Github</h2>
+
+Now that our web server is up and running, I'll walk you through the steps to clone my GitHub repository, which contains the following files: index.html, styles.css, Contact/, startup.sh, and default. I'll explain the purpose of the last two shortly.
+
+Since the git command is not installed, we need to install it first by running:
+
+'apt update && apt install git -y'
+
+![git](img/23git.png)
+
+Next, copy the HTTPS link to the repository and use the following command:
+
+![repo](img/22Github.png)
+
+`git clone <Path that you just copied>`
+
+`cd Web-App-Azure/`
+
+Move the necessary files to the wwwroot directory:
+
+`mv index.html Contact/ styles.css /home/site/wwwroot/`
+
+![mv](img/24mv.png)
+
+Finally, open a browser and navigate to your App Service URL:
+
+![mv](img/25Web.png)
 
 
 <b><h3>------------------Alerts------------------</h3></b>
