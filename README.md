@@ -82,13 +82,13 @@ TXT Record: Add a TXT record in your DNS settings to prove ownership.
 
 Once you've added the required DNS records, click Verify in Azure to confirm ownership.
 
-While making your website accessible via both www and no-www versions can enhance user accessibility and flexibility, it introduces complexities that can affect SEO (search engine optimization), security, and maintenance efforts. To maximize benefits and minimize drawbacks, it's advisable to select a primary domain and ensure all traffic is redirected to it.
+While making your website accessible via both www and no-www versions can enhance user accessibility and flexibility, it introduces complexities that can affect SEO (Search Engine Optimization), security, and maintenance efforts. To maximize benefits and minimize drawbacks, it's advisable to select a primary domain and ensure all traffic is redirected to it.
 
-I do recommend to set both cname and A record to point to your Azure Web App to handle traffic from both domains, even if you plan to use only one as your primary domain.
+I recommend setting both CNAME and A records to point to your Azure Web App to handle traffic from both domains, even if you plan to use only one as your primary domain.
 
-I’ll explain how to redirect from the root (no-www) to subdomain www using the file default of nginx.
+I'll explain how to redirect from the root domain (no www) to the www subdomain using the default configuration file of nginx.
 
-In seconds azure will bind the certificate and allow https  
+In seconds, Azure will bind the certificate and enable HTTPS.
 
 ![rready](img/16Web.png)
 
@@ -158,6 +158,29 @@ Move the necessary files to the wwwroot directory:
 Finally, open a browser and navigate to your App Service URL:
 
 ![mv](img/25Web.png)
+
+<h2>The NGINX configuration file</h2>
+
+Now if we click in contact 
+
+![contact](img/26Contact.png)
+
+You will see that the URL ends with .html extension. omitting file extensions from your URLs enhances security, usability, flexibility, and search engine performance, while also providing a cleaner and more professional appearance for your website.
+
+For that we need to change the nginx file /etc/nginx/nginx.conf
+
+![nginxconf](img/27conf.png)
+
+Here we see that the include directive tells nginx to include the contents of the specified file or files at that point in the configuration. This keeps your main nginx configuration file (nginx.conf) clean and manageable.
+
+We are going to edit /etc/nginx/sites-available/, which contains configuration files for all sites that are available on your server. Each file typically represents a separate website or application with its own server block (we only have one default). The /etc/nginx/sites-enabled/ directory contains symbolic links (symlinks) to the configuration files in sites-available that you want nginx to actually use. Only the configurations linked here are loaded by nginx when it starts or reloads.
+
+![nginxdef](img/27default.png)
+
+
+
+
+
 
 
 <b><h3>------------------Alerts------------------</h3></b>
