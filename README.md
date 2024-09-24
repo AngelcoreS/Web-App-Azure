@@ -82,11 +82,11 @@ TXT Record: Add a TXT record in your DNS settings to prove ownership.
 
 Once you've added the required DNS records, click Verify in Azure to confirm ownership.
 
-Configure A and/or CNAME Record:
+While making your website accessible via both www and no-www versions can enhance user accessibility and flexibility, it introduces complexities that can affect SEO (search engine optimization), security, and maintenance efforts. To maximize benefits and minimize drawbacks, it's advisable to select a primary domain and ensure all traffic is redirected to it.
 
-After verifying ownership, configure either an A Record or a CNAME Record in your domain's DNS settings to bind the domain to your App Service:
-CNAME: If using a subdomain (e.g., www.mydomain.com), set the CNAME record to point to your App Service’s default URL (your-app-name.azurewebsites.net).
-A Record: If using the root domain (e.g., mydomain.com), set an A record pointing to your App Service’s IP address, which can be found in the Custom domains settings.
+I do recommend to set both cname and A record to point to your Azure Web App to handle traffic from both domains, even if you plan to use only one as your primary domain.
+
+I’ll explain how to redirect from the root (no-www) to subdomain www using the file default of nginx.
 
 In seconds azure will bind the certificate and allow https  
 
