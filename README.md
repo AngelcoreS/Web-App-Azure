@@ -177,10 +177,83 @@ We are going to edit /etc/nginx/sites-available/, which contains configuration f
 
 ![nginxdef](img/27default.png)
 
+Server block: This defines the basic configuration for the web server, specifying how it should listen for incoming connections.
+
+Root directive: The document root is set to /home/site/wwwroot, defines the top-level directory from which the server will look for and serve files based on the requests it receives.
+
+Index directive: The server will serve index.html or home.html as the default files when accessing the root of the website.
+
+If someone visits the root of your site (e.g., http://example.com/), NGINX will serve the index.html or home.html file from /home/site/wwwroot/, because the index directive specifies these files.
+
+Location block for root (/):
+
+The try_files directive is used to check if the requested URI has a corresponding file ($uri), appends .html if needed ($uri.html), and serves a 404 error if neither is found.
+
+The rewrite rule ensures that URLs ending in .html are served without that extension, making them cleaner and more user-friendly. The rewrite /$1 permanent directive tells NGINX to issue a 301 redirect (permanent redirect). This ensures that search engines and browsers cache the redirect for future visits.
+
+In the image above, I made changes to redirect non-www domains (root) to www. To achieve this, we need to add another server block at the top, with server_name example.com, which redirects to www.example.com. Below is an example of the server block that redirects traffic from example.com to www.example.com:
+
+server 
+{
+
+    listen 8080;
+    
+    listen [::]:80;
+    
+    server_name example.com;
+    
+    return 301 http://www.example.com$request_uri;
+}
+
+We already have this file on Web-App-Azure folder that we cloned, so we need to copy (cp) to /etc/nginx/sites-available/default
 
 
+Here is an improved version with better grammar and structure:
+
+The try_files directive is used to check if the requested URI corresponds to an existing file ($uri). If not, it appends .html to the URI ($uri.html) and serves a 404 error if neither is found.
+
+The rewrite rule ensures that URLs ending in .html are served without the extension, making them cleaner and more user-friendly. The rewrite /$1 permanent directive tells NGINX to issue a 301 redirect (permanent redirect). This ensures that search engines and browsers cache the redirect for future visits.
+
+In the image above, I made changes to redirect non-www domains (root) to www. To achieve this, we need to add another server block at the top, with server_name example.com, which redirects to www.example.com. Below is an example of the server block that redirects traffic from example.com to www.example.com:
+
+nginx
+Copy code
+server {
+    listen 8080;
+    listen [::]:80;
+    server_name example.com;
+    return 301 http://www.example.com$request_uri;
+}
+We already have this file in the Web-App-Azure folder that we cloned, so we need to copy it (cp) to /etc/nginx/sites-available/default.
+
+Next, the nginx -t command is used to test the NGINX configuration files. It checks for syntax errors and verifies file integrity to ensure everything is correct before reloading or restarting the server.
+
+After verifying the configuration, use the following command to restart NGINX:
+
+`service nginx restart`
+
+![nginxdef](img/28restart.png)
+
+At this point, we should be able to access example.com/index.html and automatically redirect to example.com/index without the .html extension.
+
+<h2>Persistent Changes</h2>
+
+<b>Note: Any data outside `/home' is not persisted</b>
+
+Since we are editing the /etc directory, which is outside the /home directory, any changes made to these files will be overwritten whenever Azure scales or adjusts the environment, as the system resets the configuration to its default state.
+
+This is where the startup.sh file comes in. However, since this file was cloned from GitHub, it contains hidden carriage return characters (\r) at the end of each line, which need to be removed using the following command:
+
+`sed -i 's/\r//' startup.sh`
+
+![hidden](img/29startupfile.png)
+
+To confirm that the file works correctly, we can use cat -v to display non-printing characters:
+
+![sed](img/30hidden.png)
+
+Finally, in the Azure portal, navigate to Configuration under Settings. In the Startup Command box, enter the absolute path of the startup.sh file to ensure that it runs every time the app starts. This will apply the necessary configuration changes automatically, even after Azure scales or makes adjustments to the environment.
+
+![fin](img/31startupazure.png)
 
 
-
-
-<b><h3>------------------Alerts------------------</h3></b>
