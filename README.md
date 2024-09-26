@@ -6,6 +6,8 @@ I also installed Git to clone my repository, and set up the NGINX configuration 
 
 This tutorial combines both the technical setup and problem-solving skills that helped me overcome various challenges, ensuring a smooth deployment process from code to live website.
 
+While manual deployment may not always be practical due to the availability of frameworks that streamline the process, it was invaluable in strengthening my foundational understanding of how web apps are built and secured.
+
 <h2>Create App Services</h2>
 
 1. Log in to Azure Portal
