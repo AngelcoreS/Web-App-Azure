@@ -261,4 +261,4 @@ Finally, in the Azure portal, navigate to Configuration under Settings. In the S
 ![fin](img/31startupazure.png)
 
 
-[<b>Check Part 2/b>](https://github.com/AngelcoreS/Phpmailer-Web-Azure)
+[<b>Check Part 2 </b>](https://github.com/AngelcoreS/Phpmailer-Web-Azure)
